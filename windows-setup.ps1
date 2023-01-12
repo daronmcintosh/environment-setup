@@ -16,8 +16,10 @@ Invoke-WebRequest -URI "https://github.com/ryanoasis/nerd-fonts/releases/downloa
 Expand-Archive FiraCode.zip -DestinationPath C:\Windows\fonts
 
 # TODO: should the $PROFILE for powershell file be tracked in git?
+# should profile config for windows terminal also be tracked
 
 # install wsl
-# install ubuntu from a tar
-# run setup linux-setup.sh in container
 # wsl --install
+
+# install distro from tar file. distro has default user, daron, and linux-setup.sh was already ran in it
+# wsl --import BaseUbuntu BaseUbuntu .\ubuntu-22.04.tar
