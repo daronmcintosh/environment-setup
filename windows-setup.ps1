@@ -20,7 +20,7 @@ winget install -e --id JanDeDobbeleer.OhMyPosh
 
 # install font
 Invoke-WebRequest -URI "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/FiraCode.zip" -Out FiraCode.zip
-Expand-Archive FiraCode.zip -DestinationPath C:\Windows\fonts
+Expand-Archive FiraCode.zip -DestinationPath C:\Windows\fonts -Force
 
 # TODO: should the $PROFILE for powershell file be tracked in git? for loading oh my posh
 # TODO: should profile config for windows terminal also be tracked? for setting default font
