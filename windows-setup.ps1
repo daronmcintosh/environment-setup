@@ -5,8 +5,6 @@
 if (!(Test-Path -Path $PROFILE)) {
   New-Item -ItemType File -Path $PROFILE -Force
 }
-# default is restricted which prevents $PROFILE from running
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 # TODO: download file from github then import then delete
 # rancher desktop is a bit buggy at the moment so we'll stick with docker desktop for now
