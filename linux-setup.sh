@@ -14,7 +14,8 @@ install_packages() {
     unzip \
     wget \
     zip \
-    zsh
+    zsh \
+    neofetch
 }
 
 install_ohmyzsh() {
