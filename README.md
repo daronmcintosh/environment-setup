@@ -3,7 +3,7 @@
 ## how to use
 
 ```sh
-bash <(curl -s https://raw.githubusercontent.com/daronmcintosh/environment-setup/main/linux-setup.sh)
+bash <(curl -s https://raw.githubusercontent.com/daronmcintosh/environment-setup/main/linux-setup.sh?token=GHSAT0AAAAAAB5LUKUUASVXHMBUJC4V5UDYY6AIDKA)
 ```
 
 ```ps1
