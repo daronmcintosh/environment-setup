@@ -15,6 +15,9 @@ install_packages() {
     wget \
     zip \
     zsh \
+    duf \
+    exa \
+    batcat \
     neofetch
 }
 
