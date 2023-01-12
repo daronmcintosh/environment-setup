@@ -9,7 +9,7 @@ if (!(Test-Path -Path $PROFILE)) {
 # TODO: download file from github then import then delete
 # rancher desktop is a bit buggy at the moment so we'll stick with docker desktop for now
 # winget import --import-file winstall.json
-winget install -e --id Google.Chrome
+# winget install -e --id Google.Chrome
 winget install -e --id Microsoft.WindowsTerminal
 winget install -e --id JanDeDobbeleer.OhMyPosh
 
