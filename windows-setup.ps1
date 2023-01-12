@@ -9,14 +9,15 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 # TODO: download file from github then import then delete
 # rancher desktop is a bit buggy at the moment so we'll stick with docker desktop for now
-winget import --import-file winstall.json
+# winget import --import-file winstall.json
 
 # install font
 Invoke-WebRequest -URI "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/FiraCode.zip" -Out FiraCode.zip
 Expand-Archive FiraCode.zip -DestinationPath C:\Windows\fonts
 
-# TODO: should the $PROFILE for powershell file be tracked in git?
-# should profile config for windows terminal also be tracked
+# TODO: should the $PROFILE for powershell file be tracked in git? for loading oh my posh
+# TODO: should profile config for windows terminal also be tracked? for setting default font
+
 
 # install wsl
 # wsl --install
