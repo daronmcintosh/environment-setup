@@ -17,7 +17,7 @@ install_packages() {
     zsh \
     duf \
     exa \
-    batcat \
+    bat \
     neofetch
 }
 
