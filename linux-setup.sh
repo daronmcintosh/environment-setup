@@ -15,7 +15,7 @@ install_packages() {
     wget \
     zip \
     zsh \
-    duf \
+    # duf \ # duf isn't working in dev container so disabling it for a bit
     exa \
     bat \
     neofetch
