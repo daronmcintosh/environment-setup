@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eou pipefail
+set -ou pipefail
 # TODO: maybe we can repurpose the repo to not only store dotfiles
 # so we would update the setup script to clone repoName/dotfiles
 
