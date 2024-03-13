@@ -1,6 +1,5 @@
 # environment-setup
 
-<!-- TODO: both setups should be idempotent -->
 ## linux
 
 ```sh

@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM ubuntu:latest
+FROM --platform=linux/amd64 ubuntu:latest
 
 RUN apt update && apt install -y \
     curl \
@@ -10,9 +10,9 @@ RUN apt update && apt install -y \
     sudo \
     nano
 
-COPY linux-setup.sh ./
+COPY . .
 RUN chmod +x linux-setup.sh
-ARG CACHE_DATE=2023-01-01
+ARG CACHE_DATE=2024-03-13
 RUN ./linux-setup.sh
 
 ENTRYPOINT [ "/bin/zsh" ]
