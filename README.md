@@ -1,5 +1,7 @@
 # environment-setup
 
+TODO: checkout a solution like https://github.com/daytonaio/daytona which would solve my use cases?
+
 ## linux
 
 ```sh
