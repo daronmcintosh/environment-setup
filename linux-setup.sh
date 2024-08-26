@@ -34,6 +34,7 @@ main() {
   install_asdf
 }
 
+# TODO: this doesn't work since the file would need to be local
 source ./functions.sh
 main
 
