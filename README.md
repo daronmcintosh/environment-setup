@@ -1,6 +1,7 @@
 # environment-setup
 
 TODO: checkout a solution like https://github.com/daytonaio/daytona which would solve my use cases?
+TODO: add step to configure font for editors (nvim, vscode) and terminal (iterm2 and windows terminal)
 
 ## linux
 
