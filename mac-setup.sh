@@ -3,7 +3,8 @@ set -ou pipefail
 
 install_mac_packages() {
   echo "installing mac packages"
-  brew install asdf bat eza fastfetch gh neovim tmux wget zoxide zsh 
+  brew install asdf bat eza fastfetch gh neovim tmux wget zoxide zsh
+  brew install --cask alt-tab docker ghostty raycast rectangle
 }
 
 install_ohmyzsh() {
