@@ -49,7 +49,7 @@ setup_dotfiles() {
   echo "configuring dotfiles..."
 
   DOTFILES_DIR=$HOME/.dotfiles
-  git clone --bare https://github.com/daronmcintosh/dotfiles.git $DOTFILES_DIR
+  git clone --bare git@github.com:daronmcintosh/dotfiles.git $DOTFILES_DIR
 
   git --work-tree=$HOME --git-dir=$DOTFILES_DIR checkout
   if [ $? = 0 ]; then
@@ -65,7 +65,7 @@ setup_dotfiles() {
 
 setup_neovim(){
   echo "configuring neovim..."
-  git clone https://github.com/daronmcintosh/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+  git clone git@github.com:daronmcintosh/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 }
 
 setup_asdf() {
