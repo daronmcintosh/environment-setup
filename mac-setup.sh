@@ -14,5 +14,9 @@ main() {
   install_asdf
 }
 
+
+echo "sourcing function.sh"
 source <(curl -s https://raw.githubusercontent.com/daronmcintosh/environment-setup/main/functions.sh)
+echo "starting mac setup..."
 main
+echo "mac setup complete!"
