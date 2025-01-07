@@ -7,6 +7,7 @@ BREW_PKGS=(
   eza
   fastfetch
   gh
+  lazygit
   neovim
   tmux
   wget
