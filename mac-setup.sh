@@ -1,10 +1,31 @@
 #!/bin/bash
 set -ou pipefail
 
+BREW_PKGS=(
+  asdf
+  bat
+  eza
+	fastfetch
+	gh
+  neovim
+  tmux
+  wget
+  zoxide
+  zsh
+)
+BREW_CASK_PKGS=(
+  alt-tab
+  docker
+  google-cloud-sdk
+  ghostty
+  raycast
+  rectangle
+)
+
 install_mac_packages() {
   echo "installing mac packages"
-  brew install asdf bat eza fastfetch gh neovim tmux wget zoxide zsh
-  brew install --cask --force alt-tab docker google-cloud-sdk ghostty raycast rectangle
+  for i in "${BREW_PKGS[@]}"; do brew install $i; done
+  for i in "${BREW_CASK_PKGS[@]}"; do brew install --cask $i; done
 }
 
 install_ohmyzsh() {
