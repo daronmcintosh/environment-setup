@@ -6,6 +6,7 @@ BREW_PKGS=(
   bat
   eza
   fastfetch
+  go
   gh
   lazygit
   neovim
