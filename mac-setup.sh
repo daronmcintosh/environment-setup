@@ -6,10 +6,12 @@ BREW_PKGS=(
   bat
   eza
   fastfetch
+  fd
   go
   gh
   lazygit
   neovim
+  ripgrep
   tmux
   wget
   zoxide
