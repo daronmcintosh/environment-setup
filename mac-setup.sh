@@ -45,6 +45,7 @@ setup_asdf() {
   asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
   asdf plugin add kubectl https://github.com/asdf-community/asdf-kubectl.git
   asdf plugin add k3d https://github.com/spencergilbert/asdf-k3d.git
+  asdf plugin add pnpm
   # install all tools in .tools_version: https://asdf-vm.com/manage/configuration.html#tool-versions
   asdf install
 }
