@@ -5,8 +5,8 @@ BREW_PKGS=(
   asdf
   bat
   eza
-	fastfetch
-	gh
+  fastfetch
+  gh
   neovim
   tmux
   wget
