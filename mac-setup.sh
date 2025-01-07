@@ -14,4 +14,5 @@ main() {
   install_asdf
 }
 
+source <(curl -s https://raw.githubusercontent.com/daronmcintosh/environment-setup/main/functions.sh)
 main
