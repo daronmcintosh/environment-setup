@@ -15,11 +15,16 @@ BREW_PKGS=(
 )
 BREW_CASK_PKGS=(
   alt-tab
+  bruno
   docker
   google-cloud-sdk
   ghostty
+  numi
   raycast
   rectangle
+  stats
+  spotify
+  visual-studio-code
 )
 
 # TODO: checkout https://gist.github.com/shortjared/c22745d791f84ea9cecd8f804a084d01
