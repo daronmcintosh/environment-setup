@@ -25,7 +25,7 @@ BREW_CASK_PKGS=(
 install_mac_packages() {
   echo "installing mac packages"
   for i in "${BREW_PKGS[@]}"; do brew install $i; done
-  for i in "${BREW_CASK_PKGS[@]}"; do brew install --cask $i; done
+  for i in "${BREW_CASK_PKGS[@]}"; do brew install --force --cask $i; done
 }
 
 install_ohmyzsh() {
