@@ -22,6 +22,8 @@ BREW_CASK_PKGS=(
   rectangle
 )
 
+# TODO: checkout https://gist.github.com/shortjared/c22745d791f84ea9cecd8f804a084d01
+
 install_mac_packages() {
   echo "installing mac packages"
   for i in "${BREW_PKGS[@]}"; do brew install $i; done
