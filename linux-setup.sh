@@ -49,9 +49,13 @@ install_asdf() {
 
 install_neovim(){
   echo "installing neovim"
+  sudo rm -rf $HOME/.local/nvim
+  mkdir -p $HOME/Downloads
+  cd $HOME/Downloads
   curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
-  sudo rm -rf /opt/nvim
-  sudo tar -C /opt -xzf nvim-linux64.tar.gz
+  sudo tar -C $HOME/.local -xzf nvim-linux64.tar.gz
+  mv $HOME/.local/nvim-linux64 $HOME/.local/nvim
+  rm nvim-linux64.tar.gz
 }
 
 install_linux_packages() {
