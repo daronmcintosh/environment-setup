@@ -57,10 +57,9 @@ install_neovim(){
 install_linux_packages() {
   echo "installing linux packages"
   # for debian based distros
-  # TODO: replace exa with eza
   sudo apt update && sudo apt install -y \
     bat \
-    exa \
+    eza \
     ca-certificates \
     curl \
     git \
