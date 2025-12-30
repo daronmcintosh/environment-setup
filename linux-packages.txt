@@ -1,0 +1,11 @@
+bat
+eza
+ca-certificates
+curl
+git
+neofetch
+tmux
+unzip
+wget
+zip
+zsh

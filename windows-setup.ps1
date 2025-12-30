@@ -4,18 +4,22 @@ function Update-Profile {
   if (!(Test-Path -Path $PROFILE)) {
     New-Item -ItemType File -Path $PROFILE -Force
   }
-  Install-Module -Name PowerShellGet -Force
-  Install-Module -Name Terminal-Icons -Repository PSGallery
+  Install-Module -Name PowerShellGet -Force -AllowClobber
+  Install-Module -Name Terminal-Icons -Repository PSGallery -Force
   Start-Process -Verb RunAs powershell.exe "Install-Module PSReadLine -AllowPrerelease -Force"
 
-  @"
-oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\powerlevel10k_lean.omp.json" | Invoke-Expression
+  $marker = "# MANAGED_BY_SETUP_SCRIPT"
+  if (-not (Select-String -Path $PROFILE -Pattern $marker -Quiet -ErrorAction SilentlyContinue)) {
+    @"
+$marker
+oh-my-posh init pwsh --config "`$env:POSH_THEMES_PATH\powerlevel10k_lean.omp.json" | Invoke-Expression
 Import-Module -Name Terminal-Icons
 Import-Module PSReadLine
 Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -PredictionViewStyle ListView
 Set-PSReadLineOption -EditMode Windows
 "@ >> $PROFILE
+  }
 }
 
 function Install-Fonts {

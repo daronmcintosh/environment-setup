@@ -1,49 +1,29 @@
 #!/bin/bash
 set -ou pipefail
 
-BREW_PKGS=(
-  asdf
-  bat
-  eza
-  fastfetch
-  fd
-  go
-  gh
-  lazygit
-  neovim
-  ripgrep
-  tmux
-  wget
-  zoxide
-  zsh
-)
-BREW_CASK_PKGS=(
-  alt-tab
-  bruno
-  docker
-  google-cloud-sdk
-  ghostty
-  numi
-  raycast
-  rectangle
-  stats
-  spotify
-  visual-studio-code
-)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # TODO: checkout https://gist.github.com/shortjared/c22745d791f84ea9cecd8f804a084d01
 
 install_mac_packages() {
   echo "installing mac packages"
-  for i in "${BREW_PKGS[@]}"; do brew install $i; done
-  for i in "${BREW_CASK_PKGS[@]}"; do brew install --force --cask $i; done
+  brew bundle --file="$SCRIPT_DIR/Brewfile"
 }
 
 install_ohmyzsh() {
   echo "installing ohmyzsh..."
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
+  P10K_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+  if [ ! -d "$P10K_DIR" ]; then
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$P10K_DIR"
+  fi
+
+  AUTOSUGGESTIONS_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+  if [ ! -d "$AUTOSUGGESTIONS_DIR" ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions "$AUTOSUGGESTIONS_DIR"
+  fi
+
   # git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
   chsh -s $(which zsh)
 }
@@ -52,7 +32,9 @@ setup_dotfiles() {
   echo "configuring dotfiles..."
 
   DOTFILES_DIR=$HOME/.dotfiles
-  git clone --bare git@github.com:daronmcintosh/dotfiles.git $DOTFILES_DIR
+  if [ ! -d "$DOTFILES_DIR" ]; then
+    git clone --bare git@github.com:daronmcintosh/dotfiles.git "$DOTFILES_DIR"
+  fi
 
   git --work-tree=$HOME --git-dir=$DOTFILES_DIR checkout
   if [ $? = 0 ]; then
@@ -60,25 +42,28 @@ setup_dotfiles() {
   else
     echo "dotfiles conflict. stashing"
     git --work-tree=$HOME --git-dir=$DOTFILES_DIR stash
+    git --work-tree=$HOME --git-dir=$DOTFILES_DIR checkout
   fi
 
-  git --work-tree=$HOME --git-dir=$DOTFILES_DIR checkout
   git --work-tree=$HOME --git-dir=$DOTFILES_DIR config --local status.showUntrackedFiles no
 }
 
 setup_neovim(){
   echo "configuring neovim..."
-  git clone git@github.com:daronmcintosh/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+  NVIM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
+  if [ ! -d "$NVIM_DIR" ]; then
+    git clone git@github.com:daronmcintosh/kickstart.nvim.git "$NVIM_DIR"
+  fi
 }
 
 setup_asdf() {
   echo "configuring asdf..."
   # add asdf to path so the following commands work
   export PATH="$PATH:~/.asdf/bin"
-  asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
-  asdf plugin add kubectl https://github.com/asdf-community/asdf-kubectl.git
-  asdf plugin add k3d https://github.com/spencergilbert/asdf-k3d.git
-  asdf plugin add pnpm
+  asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git 2>/dev/null || true
+  asdf plugin add kubectl https://github.com/asdf-community/asdf-kubectl.git 2>/dev/null || true
+  asdf plugin add k3d https://github.com/spencergilbert/asdf-k3d.git 2>/dev/null || true
+  asdf plugin add pnpm 2>/dev/null || true
   # install all tools in .tools_version: https://asdf-vm.com/manage/configuration.html#tool-versions
   asdf install
 }
