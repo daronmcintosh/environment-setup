@@ -1,5 +1,7 @@
 #!/bin/bash
-set -ou pipefail
+set -eou pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 install_ohmyzsh() {
   echo "installing oh my zsh and cloning custom plugins"
@@ -15,7 +17,6 @@ install_ohmyzsh() {
     git clone https://github.com/zsh-users/zsh-autosuggestions "$AUTOSUGGESTIONS_DIR"
   fi
 
-  # git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
   chsh -s $(which zsh)
 }
 
@@ -48,17 +49,24 @@ setup_neovim(){
 }
 
 install_asdf() {
-  # https://blog.joaograssi.com/windows-subsystem-for-linux-with-oh-my-zsh-conemu/
+  # linux needs to install asdf manually (mac uses brew)
   echo "installing asdf"
   if [ ! -d "$HOME/.asdf" ]; then
-    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.2
+    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.1
   fi
+}
 
+setup_asdf() {
+  echo "configuring asdf..."
   # add asdf to path so the following commands work
   export PATH="$PATH:~/.asdf/bin"
-  asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git 2>/dev/null || true
-  asdf plugin add kubectl https://github.com/asdf-community/asdf-kubectl.git 2>/dev/null || true
-  asdf plugin add k3d https://github.com/spencergilbert/asdf-k3d.git 2>/dev/null || true
+
+  # install plugins from shared list
+  while read -r line; do
+    [ -z "$line" ] && continue
+    asdf plugin add $line 2>/dev/null || true
+  done < "$SCRIPT_DIR/asdf-plugins.txt"
+
   # install all tools in .tools_version: https://asdf-vm.com/manage/configuration.html#tool-versions
   asdf install
 }
@@ -69,17 +77,17 @@ install_neovim(){
     echo "neovim already installed, skipping"
     return
   fi
-  mkdir -p $HOME/Downloads $HOME/.local
-  cd $HOME/Downloads
-  curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
-  tar -C $HOME/.local -xzf nvim-linux64.tar.gz
-  mv $HOME/.local/nvim-linux64 $HOME/.local/nvim
-  rm nvim-linux64.tar.gz
+  mkdir -p "$HOME/.local"
+  (
+    cd "$(mktemp -d)"
+    curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+    tar -C "$HOME/.local" -xzf nvim-linux64.tar.gz
+    mv "$HOME/.local/nvim-linux64" "$HOME/.local/nvim"
+  )
 }
 
 install_linux_packages() {
   echo "installing linux packages"
-  SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
   # for debian based distros
   sudo apt update && xargs -a "$SCRIPT_DIR/linux-packages.txt" sudo apt install -y
 }
@@ -91,6 +99,7 @@ main() {
   setup_neovim
   setup_dotfiles # TODO: ensure tmux config is working
   install_asdf
+  setup_asdf
 }
 
 main

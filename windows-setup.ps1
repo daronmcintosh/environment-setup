@@ -25,19 +25,24 @@ Set-PSReadLineOption -EditMode Windows
 function Install-Fonts {
   Write-Output "installing fonts"
 
-  Invoke-WebRequest -URI "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/FiraCode.zip" -Out FiraCode.zip
-  mkdir ~/Downloads/Fonts
-  Expand-Archive FiraCode.zip -DestinationPath ~/Downloads/Fonts -Force
+  $fontsDir = "$env:USERPROFILE\Downloads\Fonts"
+  $zipPath = "$env:USERPROFILE\Downloads\FiraCode.zip"
+
+  if (-not (Test-Path $fontsDir)) {
+    Invoke-WebRequest -URI "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/FiraCode.zip" -Out $zipPath
+    New-Item -ItemType Directory -Path $fontsDir -Force
+    Expand-Archive $zipPath -DestinationPath $fontsDir -Force
+    Remove-Item $zipPath
+  }
 
   $fonts = (New-Object -ComObject Shell.Application).Namespace(0x14)
-  foreach ($file in Get-ChildItem ~/Downloads/Fonts/*.ttf) {
+  foreach ($file in Get-ChildItem $fontsDir/*.ttf) {
     $fileName = $file.Name
-    if (-not(Test-Path -Path "C:\Windows\fonts\$fileName" )) {
-      Write-Output $fileName
-      Get-ChildItem $file | ForEach-Object { $fonts.CopyHere($_.fullname) }
+    if (-not(Test-Path -Path "C:\Windows\fonts\$fileName")) {
+      Write-Output "Installing $fileName"
+      $fonts.CopyHere($file.fullname)
     }
   }
-  Copy-Item ~/Downloads/Fonts/*.ttf c:\windows\fonts\
 }
 
 function Install-Packages {
@@ -70,8 +75,7 @@ function Main {
 
   Update-Profile
   Install-Fonts
-  # Install-Packages
-  # Install-WSL
+  Install-Packages
 }
 
 Main

@@ -1,0 +1,4 @@
+nodejs https://github.com/asdf-vm/asdf-nodejs.git
+kubectl https://github.com/asdf-community/asdf-kubectl.git
+k3d https://github.com/spencergilbert/asdf-k3d.git
+pnpm

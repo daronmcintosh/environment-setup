@@ -1,9 +1,16 @@
 #!/bin/bash
-set -ou pipefail
+set -eou pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# TODO: checkout https://gist.github.com/shortjared/c22745d791f84ea9cecd8f804a084d01
+install_homebrew() {
+  if command -v brew &> /dev/null; then
+    echo "homebrew already installed, skipping"
+    return
+  fi
+  echo "installing homebrew"
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+}
 
 install_mac_packages() {
   echo "installing mac packages"
@@ -24,7 +31,6 @@ install_ohmyzsh() {
     git clone https://github.com/zsh-users/zsh-autosuggestions "$AUTOSUGGESTIONS_DIR"
   fi
 
-  # git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
   chsh -s $(which zsh)
 }
 
@@ -33,7 +39,7 @@ setup_dotfiles() {
 
   DOTFILES_DIR=$HOME/.dotfiles
   if [ ! -d "$DOTFILES_DIR" ]; then
-    git clone --bare git@github.com:daronmcintosh/dotfiles.git "$DOTFILES_DIR"
+    git clone --bare https://github.com/daronmcintosh/dotfiles.git "$DOTFILES_DIR"
   fi
 
   git --work-tree=$HOME --git-dir=$DOTFILES_DIR checkout
@@ -52,7 +58,7 @@ setup_neovim(){
   echo "configuring neovim..."
   NVIM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
   if [ ! -d "$NVIM_DIR" ]; then
-    git clone git@github.com:daronmcintosh/kickstart.nvim.git "$NVIM_DIR"
+    git clone https://github.com/daronmcintosh/kickstart.nvim.git "$NVIM_DIR"
   fi
 }
 
@@ -60,15 +66,19 @@ setup_asdf() {
   echo "configuring asdf..."
   # add asdf to path so the following commands work
   export PATH="$PATH:~/.asdf/bin"
-  asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git 2>/dev/null || true
-  asdf plugin add kubectl https://github.com/asdf-community/asdf-kubectl.git 2>/dev/null || true
-  asdf plugin add k3d https://github.com/spencergilbert/asdf-k3d.git 2>/dev/null || true
-  asdf plugin add pnpm 2>/dev/null || true
+
+  # install plugins from shared list
+  while read -r line; do
+    [ -z "$line" ] && continue
+    asdf plugin add $line 2>/dev/null || true
+  done < "$SCRIPT_DIR/asdf-plugins.txt"
+
   # install all tools in .tools_version: https://asdf-vm.com/manage/configuration.html#tool-versions
   asdf install
 }
 
 main() {
+  install_homebrew
   install_mac_packages
   install_ohmyzsh
   setup_dotfiles # TODO: ensure tmux config is working
