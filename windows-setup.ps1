@@ -26,10 +26,10 @@ function Install-Fonts {
   Write-Output "installing fonts"
 
   $fontsDir = "$env:USERPROFILE\Downloads\Fonts"
-  $zipPath = "$env:USERPROFILE\Downloads\FiraCode.zip"
+  $zipPath = "$env:USERPROFILE\Downloads\JetBrainsMono.zip"
 
   if (-not (Test-Path $fontsDir)) {
-    Invoke-WebRequest -URI "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/FiraCode.zip" -Out $zipPath
+    Invoke-WebRequest -URI "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/JetBrainsMono.zip" -Out $zipPath
     New-Item -ItemType Directory -Path $fontsDir -Force
     Expand-Archive $zipPath -DestinationPath $fontsDir -Force
     Remove-Item $zipPath
