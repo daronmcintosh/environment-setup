@@ -68,7 +68,7 @@ setup_dotfiles() {
   DOTFILES_DIR=$HOME/.dotfiles
   local first_run=0
   if [ ! -d "$DOTFILES_DIR" ]; then
-    git clone --bare https://github.com/daronmcintosh/dotfiles.git "$DOTFILES_DIR"
+    git clone --bare git@github.com:daronmcintosh/dotfiles.git "$DOTFILES_DIR"
     first_run=1
   fi
 
