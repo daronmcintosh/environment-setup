@@ -6,7 +6,6 @@ fastfetch
 fd-find
 git
 gh
-golang-go
 lazygit
 ripgrep
 tmux

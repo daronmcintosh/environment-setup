@@ -10,14 +10,16 @@ Idempotent setup scripts for macOS, Linux, and Windows development environments.
 - **Editor**: neovim + [kickstart.nvim](https://github.com/daronmcintosh/kickstart.nvim)
 - **Dev tools**: git, gh, lazygit, tmux
 - **Search**: ripgrep, fd, bat, eza, zoxide
-- **Languages**: go, node (via asdf), pnpm
+- **Languages**: go, node, pnpm (all via mise)
 
-### asdf Plugins (shared: `asdf-plugins.txt`)
+### mise Tools (shared: `mise-tools.txt`)
 
 - nodejs
+- pnpm
+- go
 - kubectl
 - k3d
-- pnpm
+- uv
 
 ### GUI Apps (mac only, via Brewfile)
 
@@ -80,7 +82,7 @@ iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercon
 ├── windows-setup.ps1     # Windows setup script
 ├── Brewfile              # Homebrew packages (mac)
 ├── linux-packages.txt    # apt packages (linux)
-├── asdf-plugins.txt      # Shared asdf plugins (mac + linux)
+├── mise-tools.txt        # Shared mise tools (mac + linux)
 ├── winstall.json         # winget packages (windows, unused)
 └── Dockerfile            # Test linux setup in container
 ```
@@ -101,5 +103,5 @@ Use [Windows 11 dev environment](https://developer.microsoft.com/en-us/windows/d
 
 - Edit `Brewfile` for mac packages
 - Edit `linux-packages.txt` for linux packages
-- Edit `asdf-plugins.txt` for language runtimes
+- Edit `mise-tools.txt` for language runtimes
 - Dotfiles come from [daronmcintosh/dotfiles](https://github.com/daronmcintosh/dotfiles)

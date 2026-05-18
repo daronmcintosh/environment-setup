@@ -18,6 +18,10 @@ install_mac_packages() {
 }
 
 install_ohmyzsh() {
+  if [ -d "$HOME/.oh-my-zsh" ]; then
+    echo "ohmyzsh already installed, skipping"
+    return
+  fi
   echo "installing ohmyzsh..."
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
@@ -62,19 +66,14 @@ setup_neovim(){
   fi
 }
 
-setup_asdf() {
-  echo "configuring asdf..."
-  # add asdf to path so the following commands work
-  export PATH="$PATH:~/.asdf/bin"
+setup_mise() {
+  echo "configuring mise..."
+  # mise is installed via Brewfile, already on PATH
 
-  # install plugins from shared list
   while read -r line; do
     [ -z "$line" ] && continue
-    asdf plugin add $line 2>/dev/null || true
-  done < "$SCRIPT_DIR/asdf-plugins.txt"
-
-  # install all tools in .tools_version: https://asdf-vm.com/manage/configuration.html#tool-versions
-  asdf install
+    mise use -g "$line"
+  done < "$SCRIPT_DIR/mise-tools.txt"
 }
 
 main() {
@@ -83,7 +82,7 @@ main() {
   install_ohmyzsh
   setup_dotfiles # TODO: ensure tmux config is working
   setup_neovim
-  setup_asdf
+  setup_mise
 }
 
 echo "starting mac setup..."

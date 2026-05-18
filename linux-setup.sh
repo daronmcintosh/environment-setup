@@ -4,6 +4,10 @@ set -eou pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 install_ohmyzsh() {
+  if [ -d "$HOME/.oh-my-zsh" ]; then
+    echo "ohmyzsh already installed, skipping"
+    return
+  fi
   echo "installing oh my zsh and cloning custom plugins"
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
@@ -48,27 +52,23 @@ setup_neovim(){
   fi
 }
 
-install_asdf() {
-  # linux needs to install asdf manually (mac uses brew)
-  echo "installing asdf"
-  if [ ! -d "$HOME/.asdf" ]; then
-    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.1
+install_mise() {
+  if command -v mise &>/dev/null; then
+    echo "mise already installed, skipping"
+    return
   fi
+  echo "installing mise"
+  curl -fsSL https://mise.run | sh
 }
 
-setup_asdf() {
-  echo "configuring asdf..."
-  # add asdf to path so the following commands work
-  export PATH="$PATH:~/.asdf/bin"
+setup_mise() {
+  echo "configuring mise..."
+  export PATH="$HOME/.local/bin:$PATH"
 
-  # install plugins from shared list
   while read -r line; do
     [ -z "$line" ] && continue
-    asdf plugin add $line 2>/dev/null || true
-  done < "$SCRIPT_DIR/asdf-plugins.txt"
-
-  # install all tools in .tools_version: https://asdf-vm.com/manage/configuration.html#tool-versions
-  asdf install
+    mise use -g "$line"
+  done < "$SCRIPT_DIR/mise-tools.txt"
 }
 
 install_neovim(){
@@ -98,8 +98,8 @@ main() {
   install_neovim
   setup_neovim
   setup_dotfiles # TODO: ensure tmux config is working
-  install_asdf
-  setup_asdf
+  install_mise
+  setup_mise
 }
 
 main
