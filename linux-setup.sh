@@ -32,8 +32,7 @@ setup_dotfiles() {
     git clone --bare https://github.com/daronmcintosh/dotfiles.git "$DOTFILES_DIR"
   fi
 
-  git --work-tree=$HOME --git-dir=$DOTFILES_DIR checkout
-  if [ $? = 0 ]; then
+  if git --work-tree=$HOME --git-dir=$DOTFILES_DIR checkout; then
     echo "checked out dotfiles"
   else
     echo "dotfiles conflict. stashing"
