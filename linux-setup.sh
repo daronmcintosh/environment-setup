@@ -80,9 +80,9 @@ install_neovim(){
   mkdir -p "$HOME/.local"
   (
     cd "$(mktemp -d)"
-    curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
-    tar -C "$HOME/.local" -xzf nvim-linux64.tar.gz
-    mv "$HOME/.local/nvim-linux64" "$HOME/.local/nvim"
+    curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+    tar -C "$HOME/.local" -xzf nvim-linux-x86_64.tar.gz
+    mv "$HOME/.local/nvim-linux-x86_64" "$HOME/.local/nvim"
   )
 }
 
