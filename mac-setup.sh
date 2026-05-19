@@ -68,7 +68,11 @@ setup_dotfiles() {
   DOTFILES_DIR=$HOME/.dotfiles
   local first_run=0
   if [ ! -d "$DOTFILES_DIR" ]; then
-    git clone --bare git@github.com:daronmcintosh/dotfiles.git "$DOTFILES_DIR"
+    local dotfiles_url="https://github.com/daronmcintosh/dotfiles.git"
+    if [ -n "${SSH_AUTH_SOCK:-}" ] || [ -f "$HOME/.ssh/id_ed25519" ] || [ -f "$HOME/.ssh/id_rsa" ]; then
+      dotfiles_url="git@github.com:daronmcintosh/dotfiles.git"
+    fi
+    git clone --bare "$dotfiles_url" "$DOTFILES_DIR"
     first_run=1
   fi
 
