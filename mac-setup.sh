@@ -69,10 +69,9 @@ setup_mise() {
   echo "configuring mise..."
   # mise is installed via Brewfile, already on PATH
 
-  while read -r line; do
-    [ -z "$line" ] && continue
-    mise use -g "$line"
-  done < "$SCRIPT_DIR/mise-tools.txt"
+  mkdir -p "$HOME/.config/mise"
+  ln -sf "$SCRIPT_DIR/mise.toml" "$HOME/.config/mise/config.toml"
+  mise install
 }
 
 main() {

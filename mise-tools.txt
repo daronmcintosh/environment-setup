@@ -1,6 +1,0 @@
-nodejs@22
-pnpm@9
-go@1.23
-kubectl@1.33
-k3d@5.4
-uv@0
