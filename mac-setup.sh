@@ -71,6 +71,7 @@ setup_mise() {
 
   mkdir -p "$HOME/.config/mise"
   ln -sf "$SCRIPT_DIR/mise.toml" "$HOME/.config/mise/config.toml"
+  mise trust "$SCRIPT_DIR/mise.toml"
   mise install
 }
 
