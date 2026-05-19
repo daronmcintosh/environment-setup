@@ -23,7 +23,7 @@ Idempotent setup scripts for macOS, Linux, and Windows development environments.
 
 ### GUI Apps (mac only, via Brewfile)
 
-- Ghostty, Docker, VS Code, Cursor
+- Ghostty, Docker, VS Code
 - Raycast, Rectangle, Alt-Tab, Stats
 - Bruno, Numi, Spotify
 
