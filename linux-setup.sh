@@ -4,6 +4,10 @@ set -eou pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 install_ohmyzsh() {
+  if [ -d "$HOME/.oh-my-zsh" ]; then
+    echo "ohmyzsh already installed, skipping"
+    return
+  fi
   echo "installing oh my zsh and cloning custom plugins"
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
@@ -25,11 +29,14 @@ setup_dotfiles() {
 
   DOTFILES_DIR=$HOME/.dotfiles
   if [ ! -d "$DOTFILES_DIR" ]; then
-    git clone --bare git@github.com:daronmcintosh/dotfiles.git "$DOTFILES_DIR"
+    dotfiles_url="https://github.com/daronmcintosh/dotfiles.git"
+    if [ -n "${SSH_AUTH_SOCK:-}" ] || [ -f "$HOME/.ssh/id_ed25519" ] || [ -f "$HOME/.ssh/id_rsa" ]; then
+      dotfiles_url="git@github.com:daronmcintosh/dotfiles.git"
+    fi
+    git clone --bare "$dotfiles_url" "$DOTFILES_DIR"
   fi
 
-  git --work-tree=$HOME --git-dir=$DOTFILES_DIR checkout
-  if [ $? = 0 ]; then
+  if git --work-tree=$HOME --git-dir=$DOTFILES_DIR checkout; then
     echo "checked out dotfiles"
   else
     echo "dotfiles conflict. stashing"
@@ -48,27 +55,23 @@ setup_neovim(){
   fi
 }
 
-install_asdf() {
-  # linux needs to install asdf manually (mac uses brew)
-  echo "installing asdf"
-  if [ ! -d "$HOME/.asdf" ]; then
-    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.1
+install_mise() {
+  if command -v mise &>/dev/null; then
+    echo "mise already installed, skipping"
+    return
   fi
+  echo "installing mise"
+  curl -fsSL https://mise.run | sh
 }
 
-setup_asdf() {
-  echo "configuring asdf..."
-  # add asdf to path so the following commands work
-  export PATH="$PATH:~/.asdf/bin"
+setup_mise() {
+  echo "configuring mise..."
+  export PATH="$HOME/.local/bin:$PATH"
 
-  # install plugins from shared list
-  while read -r line; do
-    [ -z "$line" ] && continue
-    asdf plugin add $line 2>/dev/null || true
-  done < "$SCRIPT_DIR/asdf-plugins.txt"
-
-  # install all tools in .tools_version: https://asdf-vm.com/manage/configuration.html#tool-versions
-  asdf install
+  mkdir -p "$HOME/.config/mise"
+  ln -sf "$SCRIPT_DIR/mise.toml" "$HOME/.config/mise/config.toml"
+  mise trust "$SCRIPT_DIR/mise.toml"
+  mise install
 }
 
 install_neovim(){
@@ -80,9 +83,9 @@ install_neovim(){
   mkdir -p "$HOME/.local"
   (
     cd "$(mktemp -d)"
-    curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
-    tar -C "$HOME/.local" -xzf nvim-linux64.tar.gz
-    mv "$HOME/.local/nvim-linux64" "$HOME/.local/nvim"
+    curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+    tar -C "$HOME/.local" -xzf nvim-linux-x86_64.tar.gz
+    mv "$HOME/.local/nvim-linux-x86_64" "$HOME/.local/nvim"
   )
 }
 
@@ -98,8 +101,8 @@ main() {
   install_neovim
   setup_neovim
   setup_dotfiles # TODO: ensure tmux config is working
-  install_asdf
-  setup_asdf
+  install_mise
+  setup_mise
 }
 
 main

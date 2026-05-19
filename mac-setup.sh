@@ -68,7 +68,11 @@ setup_dotfiles() {
   DOTFILES_DIR=$HOME/.dotfiles
   local first_run=0
   if [ ! -d "$DOTFILES_DIR" ]; then
-    git clone --bare git@github.com:daronmcintosh/dotfiles.git "$DOTFILES_DIR"
+    local dotfiles_url="https://github.com/daronmcintosh/dotfiles.git"
+    if [ -n "${SSH_AUTH_SOCK:-}" ] || [ -f "$HOME/.ssh/id_ed25519" ] || [ -f "$HOME/.ssh/id_rsa" ]; then
+      dotfiles_url="git@github.com:daronmcintosh/dotfiles.git"
+    fi
+    git clone --bare "$dotfiles_url" "$DOTFILES_DIR"
     first_run=1
   fi
 
@@ -103,19 +107,14 @@ setup_neovim(){
   clone_or_update https://github.com/daronmcintosh/kickstart.nvim.git "$NVIM_DIR"
 }
 
-setup_asdf() {
-  echo "configuring asdf..."
-  # add asdf to path so the following commands work
-  export PATH="$PATH:$HOME/.asdf/bin"
+setup_mise() {
+  echo "configuring mise..."
+  # mise is installed via Brewfile, already on PATH
 
-  # install plugins from shared list
-  while read -r line; do
-    [ -z "$line" ] && continue
-    asdf plugin add $line 2>/dev/null || true
-  done < "$SCRIPT_DIR/asdf-plugins.txt"
-
-  # install all tools in .tools_version: https://asdf-vm.com/manage/configuration.html#tool-versions
-  asdf install
+  mkdir -p "$HOME/.config/mise"
+  ln -sf "$SCRIPT_DIR/mise.toml" "$HOME/.config/mise/config.toml"
+  mise trust "$SCRIPT_DIR/mise.toml"
+  mise install
 }
 
 main() {
@@ -124,7 +123,7 @@ main() {
   install_ohmyzsh
   setup_dotfiles # TODO: ensure tmux config is working
   setup_neovim
-  setup_asdf
+  setup_mise
 }
 
 echo "starting mac setup..."

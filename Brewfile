@@ -1,11 +1,10 @@
 # Homebrew packages
-brew "asdf"
+brew "mise"
 brew "bat"
 brew "eza"
 brew "fastfetch"
 brew "fd"
 brew "fzf"
-brew "go"
 brew "gh"
 brew "lazygit"
 brew "neovim"
