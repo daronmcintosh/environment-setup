@@ -26,11 +26,12 @@ Idempotent setup scripts for macOS, Linux, and Windows development environments.
 - Ghostty, Docker, VS Code
 - Raycast, Rectangle, Alt-Tab, Stats
 - Bruno, Numi, Spotify
+- JetBrains Mono Nerd Font
 
 ### Windows
 
 - Oh My Posh, Terminal Icons, PSReadLine
-- FiraCode Nerd Font
+- JetBrains Mono Nerd Font
 - VS Code
 
 ## Prerequisites
