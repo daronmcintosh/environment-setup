@@ -6,7 +6,7 @@ Idempotent setup scripts for macOS, Linux, and Windows development environments.
 
 ### CLI Tools (mac + linux)
 
-- **Shell**: zsh, oh-my-zsh, powerlevel10k, zsh-autosuggestions
+- **Shell**: zsh, oh-my-zsh, starship, zsh-autosuggestions
 - **Editor**: neovim + [kickstart.nvim](https://github.com/daronmcintosh/kickstart.nvim)
 - **Dev tools**: git, gh, lazygit, tmux
 - **Search**: ripgrep, fd, bat, eza, zoxide
