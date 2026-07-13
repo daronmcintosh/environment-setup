@@ -55,6 +55,17 @@ setup_neovim(){
   fi
 }
 
+install_starship() {
+  if command -v starship &>/dev/null; then
+    echo "starship already installed, skipping"
+    return
+  fi
+  echo "installing starship"
+  # not packaged in debian stable / ubuntu lts apt
+  mkdir -p "$HOME/.local/bin"
+  curl -sS https://starship.rs/install.sh | sh -s -- -y -b "$HOME/.local/bin"
+}
+
 install_mise() {
   if command -v mise &>/dev/null; then
     echo "mise already installed, skipping"
@@ -98,6 +109,7 @@ install_linux_packages() {
 main() {
   install_linux_packages
   install_ohmyzsh
+  install_starship
   install_neovim
   setup_neovim
   setup_dotfiles # TODO: ensure tmux config is working
